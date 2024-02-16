@@ -3,17 +3,27 @@ import rasterio
 import numpy as np
 import re
 
-# directory containing the SSM maps
-data_dir = r'C:\Users\ASUS\Desktop\Surface Soil Moisture_Sentinel1_Fanap_Task_code\Dataset\S1_SSM'
-npy_dir = r'C:\Users\ASUS\Desktop\Surface Soil Moisture_Sentinel1_Fanap_Task_code\Dataset\npy_files'
 
 class Create_Npy_File():
     
     def __init__(self, dataset_path, save_path) -> None:
+        """
+        Initialize the CreateNpyFile class.
+
+        Parameters:
+        - dataset_path (str): Path to the directory containing SSM maps.
+        - save_path (str): Path to save the final combined numpy file.
+        """
         self.dataset_path = dataset_path
         self.save_path = save_path
 
     def extract_dates(self) -> list:
+        """
+        Extract and sort dates from filenames.
+
+        Returns:
+        - list: Sorted list of extracted dates.
+        """
         # Define the pattern for extracting dates from filenames
         date_pattern = re.compile(r'SSM_P_STCD_(\d{8})_.*\.img_mean')
 
@@ -32,6 +42,15 @@ class Create_Npy_File():
         return sorted_dates
     
     def npy_combine_mead_std_one_file(self, date) -> tuple:
+        """
+        Combine mean and standard deviation data for a specific date.
+
+        Parameters:
+        - date (str): Specific date.
+
+        Returns:
+        - tuple: (mean_ssm_data, stddev_ssm_data) if found, False otherwise.
+        """
         mean_date_pattern = re.compile(r'SSM_P_STCD_(\d{8})_.*\.img_mean$')
         stddev_date_pattern = re.compile(r'SSM_P_STCD_(\d{8})_.*\.img_stddev$')
 
@@ -62,6 +81,12 @@ class Create_Npy_File():
         return False
     
     def stack_mean_std_temporal(self) -> list:
+        """
+        Stack mean and standard deviation data for different dates.
+
+        Returns:
+        - np.ndarray: Stacked 4D matrix containing normalized data for different dates.
+        """
         dates = self.extract_dates()
         print(f'dates are: {dates}')
         print(f'len of dates are: {len(dates)}')
@@ -87,10 +112,29 @@ class Create_Npy_File():
         return final_combined_data
 
     def save_stacked_npy_file(self, npy_stacked) -> None:
+        """
+        Save the stacked numpy file.
+
+        Parameters:
+        - npy_stacked (np.ndarray): Stacked 4D matrix containing normalized data for different dates.
+        """
         np.save(self.save_path, npy_stacked)
         print(f'sucessfully saved npy in path: {self.save_path}.\n Enjoy :)')
 
 
+# directory containing the SSM maps
+data_dir = r'C:\Users\ASUS\Desktop\Surface Soil Moisture_Sentinel1_Fanap_Task_code\Dataset\S1_SSM'
+npy_dir = r'C:\Users\ASUS\Desktop\Surface Soil Moisture_Sentinel1_Fanap_Task_code\Dataset\npy_files'
+
+
+# Create instance of CreateNpyFile
 createnpy = Create_Npy_File(data_dir, npy_dir)
+
+# Stack mean and standard deviation data for different dates
 stacked_npy = createnpy.stack_mean_std_temporal()
+
+# Save the stacked numpy file
 createnpy.save_stacked_npy_file(stacked_npy)
+
+
+
