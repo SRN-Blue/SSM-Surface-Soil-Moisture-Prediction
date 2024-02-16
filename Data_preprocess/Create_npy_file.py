@@ -3,6 +3,11 @@ import rasterio
 import numpy as np
 import re
 
+from file_Paths.file_Paths import File_Path_Retriever
+
+# Initialize file path retriever
+filepath_ret = File_Path_Retriever()
+
 
 class Create_Npy_File():
     
@@ -123,8 +128,8 @@ class Create_Npy_File():
 
 
 # directory containing the SSM maps
-data_dir = r'C:\Users\ASUS\Desktop\Surface Soil Moisture_Sentinel1_Fanap_Task_code\Dataset\S1_SSM'
-npy_dir = r'C:\Users\ASUS\Desktop\Surface Soil Moisture_Sentinel1_Fanap_Task_code\Dataset\npy_files'
+data_dir = filepath_ret.return_data_dir_path
+npy_dir = filepath_ret.return_npy_save_dir_path
 
 
 # Create instance of CreateNpyFile

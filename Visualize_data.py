@@ -5,9 +5,16 @@ import cv2 as cv
 import numpy as np
 from matplotlib import pyplot as plt
 
+
+from file_Paths.file_Paths import File_Path_Retriever
+
+# Initialize file path retriever
+filepath_ret = File_Path_Retriever()
+
 # directory containing the SSM maps
-data_dir = r'C:\Users\ASUS\Desktop\Surface Soil Moisture_Sentinel1_Fanap_Task_code\Dataset\S1_SSM'
-npy_path = r'C:\Users\ASUS\Desktop\Surface Soil Moisture_Sentinel1_Fanap_Task_code\Dataset\npy_files\npy_files.npy'
+# directory containing the SSM maps
+data_dir = filepath_ret.return_data_dir_path
+npy_path = filepath_ret.return_numpy_file_path
 
 class Visualization():
     def __init__(self, data_dir, npy_path) -> None:
