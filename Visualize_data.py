@@ -44,7 +44,7 @@ class Visualization():
         loaded_data = np.load(self.npy_path)
 
         # plot the time series for a pixel at position (x, y)
-        x, y = 100, 100  # Replace these with the desired pixel coordinates
+        x, y = 300, 300  # Replace these with the desired pixel coordinates
 
         # Extract time series data for the specified pixel
         pixel_time_series = loaded_data[:, x, y, 0]  # first channel represents mean data
@@ -106,8 +106,9 @@ class Visualization():
 
 
 visulaizer = Visualization(data_dir, npy_path)
+visulaizer.report_each_axes_summary()
 visulaizer.hdr_file_plot()
-visulaizer.plot_ssm_mean_over_time_nonzero()
+visulaizer.plot_ssm_mean_over_time()
 
 
 
